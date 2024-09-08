@@ -44,7 +44,6 @@ void main() {
                 onListChanged: (Item item, bool completed) {},
                 onDeleteItem: (Item item) {}))));
     final abbvFinder = find.text('t');
-    print(abbvFinder);
     final avatarFinder = find.byType(CircleAvatar);
 
     CircleAvatar circ = tester.firstWidget(avatarFinder);
