@@ -12,7 +12,7 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Reminder> reminders = [const Reminder(name: "todo1")];
+  final List<Reminder> reminders = [const Reminder(name: "todo1",prio: Priority.medium)];
   final reminderSet = <Reminder>{};
 
   void handleListChanged(Reminder reminder, bool completed) {
@@ -43,10 +43,10 @@ class _ToDoListState extends State<ToDoList> {
     });
   }
 
-  void handleNewReminder(String reminderText, TextEditingController textController) {
+  void handleNewReminder(String reminderText, Priority priority, TextEditingController textController) {
     setState(() {
       print("Adding new item");
-      Reminder reminder = Reminder(name: reminderText);
+      Reminder reminder = Reminder(name: reminderText, prio: priority);
       reminders.insert(0, reminder);
       textController.clear();
     });

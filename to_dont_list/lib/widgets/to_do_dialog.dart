@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:to_dont_list/objects/reminder.dart';
 
 typedef ToDoListAddedCallback = Function(
-    String value, TextEditingController textConroller);
+    String value, Priority prio, TextEditingController textConroller);
 
 class ToDoDialog extends StatefulWidget {
   const ToDoDialog({
@@ -24,19 +25,35 @@ class _ToDoDialogState extends State<ToDoDialog> {
       textStyle: const TextStyle(fontSize: 20), backgroundColor: Colors.red);
 
   String valueText = "";
+  Priority priority = Priority.none;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Item To Add'),
-      content: TextField(
-        onChanged: (value) {
-          setState(() {
-            valueText = value;
-          });
-        },
-        controller: _inputController,
-        decoration: const InputDecoration(hintText: "type something here"),
+      content: Column(
+        children: [
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                valueText = value;
+              });
+            },
+            controller: _inputController,
+            decoration: const InputDecoration(hintText: "type something here"),
+          ),
+          DropdownButton<Priority>(
+            value: priority,
+            onChanged: (Priority? newValue) {
+              setState(() {
+                priority = newValue!;
+              });
+            },
+            items: Priority.values.map((Priority classType) {
+              return DropdownMenuItem<Priority>(
+                value: classType, child: Text(classType.display));
+            }).toList())
+        ],
       ),
       actions: <Widget>[
         ElevatedButton(
@@ -60,7 +77,7 @@ class _ToDoDialogState extends State<ToDoDialog> {
               onPressed: value.text.isNotEmpty
                   ? () {
                       setState(() {
-                        widget.onListAdded(valueText, _inputController);
+                        widget.onListAdded(valueText, priority, _inputController);
                         Navigator.pop(context);
                       });
                     }

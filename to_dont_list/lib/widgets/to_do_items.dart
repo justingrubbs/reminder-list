@@ -51,7 +51,7 @@ class ToDoListReminder extends StatelessWidget {
           : null,
       leading: CircleAvatar(
         backgroundColor: completed ? Colors.black54 : _getColor(context),
-        child: Text(reminder.abbrev()),
+        child: Text(reminder.prio.priorityText),
       ),
       title: Text(
         reminder.name,
