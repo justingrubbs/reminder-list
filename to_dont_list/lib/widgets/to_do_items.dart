@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:to_dont_list/objects/item.dart';
+import 'package:to_dont_list/objects/reminder.dart';
 
-typedef ToDoListChangedCallback = Function(Item item, bool completed);
-typedef ToDoListRemovedCallback = Function(Item item);
+typedef ToDoListChangedCallback = Function(Reminder reminder, bool completed);
+typedef ToDoListRemovedCallback = Function(Reminder reminder);
 
-class ToDoListItem extends StatelessWidget {
-  ToDoListItem(
-      {required this.item,
+class ToDoListReminder extends StatelessWidget {
+  ToDoListReminder(
+      {required this.reminder,
       required this.completed,
       required this.onListChanged,
-      required this.onDeleteItem})
-      : super(key: ObjectKey(item));
+      required this.onDeleteReminder})
+      : super(key: ObjectKey(reminder));
 
-  final Item item;
+  final Reminder reminder;
   final bool completed;
 
   final ToDoListChangedCallback onListChanged;
-  final ToDoListRemovedCallback onDeleteItem;
+  final ToDoListRemovedCallback onDeleteReminder;
 
   Color _getColor(BuildContext context) {
     // The theme depends on the BuildContext because different
@@ -42,19 +42,19 @@ class ToDoListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        onListChanged(item, completed);
+        onListChanged(reminder, completed);
       },
       onLongPress: completed
           ? () {
-              onDeleteItem(item);
+              onDeleteReminder(reminder);
             }
           : null,
       leading: CircleAvatar(
         backgroundColor: completed ? Colors.black54 : _getColor(context),
-        child: Text(item.abbrev()),
+        child: Text(reminder.abbrev()),
       ),
       title: Text(
-        item.name,
+        reminder.name,
         style: _getTextStyle(context),
       ),
     );

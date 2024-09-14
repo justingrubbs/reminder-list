@@ -1,6 +1,6 @@
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
-import 'package:to_dont_list/objects/item.dart';
+import 'package:to_dont_list/objects/reminder.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
 
@@ -12,10 +12,10 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Item> items = [const Item(name: "add more todos")];
-  final _itemSet = <Item>{};
+  final List<Reminder> reminders = [const Reminder(name: "todo1")];
+  final reminderSet = <Reminder>{};
 
-  void _handleListChanged(Item item, bool completed) {
+  void handleListChanged(Reminder reminder, bool completed) {
     setState(() {
       // When a user changes what's in the list, you need
       // to change _itemSet inside a setState call to
@@ -23,31 +23,31 @@ class _ToDoListState extends State<ToDoList> {
       // The framework then calls build, below,
       // which updates the visual appearance of the app.
 
-      items.remove(item);
+      reminders.remove(reminder);
       if (!completed) {
         print("Completing");
-        _itemSet.add(item);
-        items.add(item);
+        reminderSet.add(reminder);
+        reminders.add(reminder);
       } else {
         print("Making Undone");
-        _itemSet.remove(item);
-        items.insert(0, item);
+        reminderSet.remove(reminder);
+        reminders.insert(0, reminder);
       }
     });
   }
 
-  void _handleDeleteItem(Item item) {
+  void handleDeleteReminder(Reminder reminder) {
     setState(() {
       print("Deleting item");
-      items.remove(item);
+      reminders.remove(reminder);
     });
   }
 
-  void _handleNewItem(String itemText, TextEditingController textController) {
+  void handleNewReminder(String reminderText, TextEditingController textController) {
     setState(() {
       print("Adding new item");
-      Item item = Item(name: itemText);
-      items.insert(0, item);
+      Reminder reminder = Reminder(name: reminderText);
+      reminders.insert(0, reminder);
       textController.clear();
     });
   }
@@ -60,12 +60,12 @@ class _ToDoListState extends State<ToDoList> {
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          children: items.map((item) {
-            return ToDoListItem(
-              item: item,
-              completed: _itemSet.contains(item),
-              onListChanged: _handleListChanged,
-              onDeleteItem: _handleDeleteItem,
+          children: reminders.map((reminder) {
+            return ToDoListReminder(
+              reminder: reminder,
+              completed: reminderSet.contains(reminder),
+              onListChanged: handleListChanged,
+              onDeleteReminder: handleDeleteReminder,
             );
           }).toList(),
         ),
@@ -75,7 +75,7 @@ class _ToDoListState extends State<ToDoList> {
               showDialog(
                   context: context,
                   builder: (_) {
-                    return ToDoDialog(onListAdded: _handleNewItem);
+                    return ToDoDialog(onListAdded: handleNewReminder);
                   });
             }));
   }
