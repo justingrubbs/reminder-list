@@ -1,8 +1,8 @@
 enum Priority {
-  high("!!!","High",3),
-  medium("!!","Medium",2),
-  low("!","Low",1),
-  none("","None",0);
+  high("!!!","High",0),
+  medium("!!","Medium",1),
+  low("!","Low",2),
+  none("","None",3);
 
   const Priority(this.priorityText,this.display,this.prioLevel);
 
