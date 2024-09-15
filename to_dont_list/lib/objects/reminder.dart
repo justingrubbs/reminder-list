@@ -1,16 +1,18 @@
 enum Priority {
-  high("!!!","High"),
-  medium("!!","Medium"),
-  low("!","Low"),
-  none("","None");
+  high("!!!","High",3),
+  medium("!!","Medium",2),
+  low("!","Low",1),
+  none("","None",0);
 
-  const Priority(this.priorityText,this.display);
+  const Priority(this.priorityText,this.display,this.prioLevel);
 
   final String priorityText;
   final String display;
+  final int prioLevel;
 }
 
-class Reminder {
+// https://syedabdulbasit7.medium.com/understanding-and-implementing-comparable-in-dart-33916f5f06cf
+class Reminder implements Comparable<Reminder>{
   const Reminder({
     required this.name
     , required this.prio
@@ -19,7 +21,9 @@ class Reminder {
   final String name;
   final Priority prio;
 
-  String abbrev() {
-    return name.substring(0, 1);
+  @override
+  int compareTo(Reminder other) {
+    return prio.prioLevel.compareTo(other.prio.prioLevel);
   }
+
 }

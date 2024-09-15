@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/reminder.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
 import 'package:to_dont_list/widgets/to_do_dialog.dart';
+import 'package:collection/collection.dart';
 
 class ToDoList extends StatefulWidget {
   const ToDoList({super.key});
@@ -12,7 +13,8 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Reminder> reminders = [const Reminder(name: "todo1",prio: Priority.medium)];
+  final queue = PriorityQueue<Reminder>;
+  final List<Reminder> reminders = [const Reminder(name: "todo0",prio: Priority.none)];
   final reminderSet = <Reminder>{};
 
   void handleListChanged(Reminder reminder, bool completed) {
@@ -38,14 +40,14 @@ class _ToDoListState extends State<ToDoList> {
 
   void handleDeleteReminder(Reminder reminder) {
     setState(() {
-      print("Deleting item");
+      print("Deleting reminder");
       reminders.remove(reminder);
     });
   }
 
   void handleNewReminder(String reminderText, Priority priority, TextEditingController textController) {
     setState(() {
-      print("Adding new item");
+      print("New reminder");
       Reminder reminder = Reminder(name: reminderText, prio: priority);
       reminders.insert(0, reminder);
       textController.clear();
@@ -56,7 +58,7 @@ class _ToDoListState extends State<ToDoList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('To Do List'),
+          title: const Text("Reminders"),
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -83,7 +85,7 @@ class _ToDoListState extends State<ToDoList> {
 
 void main() {
   runApp(const MaterialApp(
-    title: 'To Do List',
+    title: "Reminders",
     home: ToDoList(),
   ));
 }

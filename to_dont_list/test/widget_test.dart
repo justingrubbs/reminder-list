@@ -22,7 +22,7 @@
 //   testWidgets('ToDoListItem has a text', (tester) async {
 //     await tester.pumpWidget(MaterialApp(
 //         home: Scaffold(
-//             body: ToDoListReminder(
+//             body: ToDoListItem(
 //                 item: const Item(name: "test"),
 //                 completed: true,
 //                 onListChanged: (Item item, bool completed) {},
@@ -38,7 +38,7 @@
 //       (tester) async {
 //     await tester.pumpWidget(MaterialApp(
 //         home: Scaffold(
-//             body: ToDoListReminder(
+//             body: ToDoListItem(
 //                 item: const Item(name: "test"),
 //                 completed: true,
 //                 onListChanged: (Item item, bool completed) {},
@@ -59,7 +59,7 @@
 //   testWidgets('Default ToDoList has one item', (tester) async {
 //     await tester.pumpWidget(const MaterialApp(home: ToDoList()));
 
-//     final listItemFinder = find.byType(ToDoListReminder);
+//     final listItemFinder = find.byType(ToDoListItem);
 
 //     expect(listItemFinder, findsOneWidget);
 //   });
@@ -81,7 +81,7 @@
 //     await tester.pump();
 //     expect(find.text("hi"), findsOneWidget);
 
-//     final listItemFinder = find.byType(ToDoListReminder);
+//     final listItemFinder = find.byType(ToDoListItem);
 
 //     expect(listItemFinder, findsNWidgets(2));
 //   });
