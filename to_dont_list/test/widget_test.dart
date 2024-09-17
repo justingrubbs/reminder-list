@@ -1,90 +1,77 @@
-// // This is a basic Flutter widget test.
-// //
-// // To perform an interaction with a widget in your test, use the WidgetTester
-// // utility in the flutter_test package. For example, you can send tap and scroll
-// // gestures. You can also use WidgetTester to find child widgets in the widget
-// // tree, read text, and verify that the values of widget properties are correct.
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-// import 'package:to_dont_list/main.dart';
-// import 'package:to_dont_list/objects/item.dart';
-// import 'package:to_dont_list/widgets/to_do_items.dart';
+import 'package:to_dont_list/main.dart';
+import 'package:to_dont_list/objects/reminder.dart';
+import 'package:to_dont_list/widgets/to_do_items.dart';
 
-// void main() {
-//   test('Item abbreviation should be first letter', () {
-//     const item = Item(name: "add more todos");
-//     expect(item.abbrev(), "a");
-//   });
+void main() {
+  test("Priority level of High should be 0", () {
+    const reminder = Reminder(name: "Homework",prio: Priority.high);
+    expect(reminder.prio.prioLevel, 0);
+  });
 
-//   // Yes, you really need the MaterialApp and Scaffold
-//   testWidgets('ToDoListItem has a text', (tester) async {
-//     await tester.pumpWidget(MaterialApp(
-//         home: Scaffold(
-//             body: ToDoListItem(
-//                 item: const Item(name: "test"),
-//                 completed: true,
-//                 onListChanged: (Item item, bool completed) {},
-//                 onDeleteItem: (Item item) {}))));
-//     final textFinder = find.text('test');
+    test("Priority level is correctly compared", () {
+    const reminder = Reminder(name: "Homework",prio: Priority.high);
+    const reminder2 = Reminder(name: "Nap", prio: Priority.low);
+    const reminder3 = Reminder(name: "Exercise",prio: Priority.medium);
 
-//     // Use the `findsOneWidget` matcher provided by flutter_test to verify
-//     // that the Text widgets appear exactly once in the widget tree.
-//     expect(textFinder, findsOneWidget);
-//   });
+    expect(reminder.compareTo(reminder2),-1);
+    expect(reminder2.compareTo(reminder3),1);
+    expect(reminder.compareTo(reminder3),-1);
+  });
 
-//   testWidgets('ToDoListItem has a Circle Avatar with abbreviation',
-//       (tester) async {
-//     await tester.pumpWidget(MaterialApp(
-//         home: Scaffold(
-//             body: ToDoListItem(
-//                 item: const Item(name: "test"),
-//                 completed: true,
-//                 onListChanged: (Item item, bool completed) {},
-//                 onDeleteItem: (Item item) {}))));
-//     final abbvFinder = find.text('t');
-//     final avatarFinder = find.byType(CircleAvatar);
+  // Yes, you really need the MaterialApp and Scaffold
+  testWidgets('ToDoListReminder has a text', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: ToDoListReminder(
+                reminder: const Reminder(name: "test",prio: Priority.low),
+                completed: true,
+                onListChanged: (Reminder item, bool completed) {},
+                onDeleteReminder: (Reminder item) {}))));
+    final textFinder = find.text('test');
 
-//     CircleAvatar circ = tester.firstWidget(avatarFinder);
-//     Text ctext = circ.child as Text;
+    // Use the `findsOneWidget` matcher provided by flutter_test to verify
+    // that the Text widgets appear exactly once in the widget tree.
+    expect(textFinder, findsOneWidget);
+  });
 
-//     // Use the `findsOneWidget` matcher provided by flutter_test to verify
-//     // that the Text widgets appear exactly once in the widget tree.
-//     expect(abbvFinder, findsOneWidget);
-//     expect(circ.backgroundColor, Colors.black54);
-//     expect(ctext.data, "t");
-//   });
+  testWidgets('ToDoListItem has a Circle Avatar with abbreviation',
+      (tester) async {
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: ToDoListReminder(
+                reminder: const Reminder(name: "test",prio: Priority.medium),
+                completed: true,
+                onListChanged: (Reminder item, bool completed) {},
+                onDeleteReminder: (Reminder item) {}))));
+    final abbvFinder = find.text("!!");
+    final avatarFinder = find.byType(CircleAvatar);
 
-//   testWidgets('Default ToDoList has one item', (tester) async {
-//     await tester.pumpWidget(const MaterialApp(home: ToDoList()));
+    CircleAvatar circ = tester.firstWidget(avatarFinder);
+    Text ctext = circ.child as Text;
 
-//     final listItemFinder = find.byType(ToDoListItem);
+    // Use the `findsOneWidget` matcher provided by flutter_test to verify
+    // that the Text widgets appear exactly once in the widget tree.
+    expect(abbvFinder, findsOneWidget);
+    expect(circ.backgroundColor, Colors.black54);
+    expect(ctext.data, "!!");
+  });
 
-//     expect(listItemFinder, findsOneWidget);
-//   });
+  testWidgets('Default ToDoList has no items', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ToDoList()));
 
-//   testWidgets('Clicking and Typing adds item to ToDoList', (tester) async {
-//     await tester.pumpWidget(const MaterialApp(home: ToDoList()));
+    final listItemFinder = find.byType(ToDoListReminder);
 
-//     expect(find.byType(TextField), findsNothing);
+    expect(listItemFinder, findsNothing);
+  });
 
-//     await tester.tap(find.byType(FloatingActionButton));
-//     await tester.pump(); // Pump after every action to rebuild the widgets
-//     expect(find.text("hi"), findsNothing);
-
-//     await tester.enterText(find.byType(TextField), 'hi');
-//     await tester.pump();
-//     expect(find.text("hi"), findsOneWidget);
-
-//     await tester.tap(find.byKey(const Key("OKButton")));
-//     await tester.pump();
-//     expect(find.text("hi"), findsOneWidget);
-
-//     final listItemFinder = find.byType(ToDoListItem);
-
-//     expect(listItemFinder, findsNWidgets(2));
-//   });
-
-//   // One to test the tap and press actions on the items?
-// }
+}

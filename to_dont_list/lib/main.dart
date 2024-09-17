@@ -15,7 +15,6 @@ class ToDoList extends StatefulWidget {
 class _ToDoListState extends State<ToDoList> {
   final reminders = PriorityQueue<Reminder>((a,b) => a.compareTo(b));
     
-  // final List<Reminder> reminders = [const Reminder(name: "todo0",prio: Priority.none)];
   final reminderSet = <Reminder>{};
 
   void handleListChanged(Reminder reminder, bool completed) {
